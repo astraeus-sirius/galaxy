@@ -33,7 +33,7 @@ def detect_labels(photo, bucket):
 		MaxLabels = max_labels,
 		MinConfidence = min_confidence,
         )
-    print('Detected labels for ' + photo)
+    print ("###################"  + " Starting Labels for "  + photo + "###################")
     print()
     for label in response['Labels']:
         print ("Label: " + label['Name'])
@@ -50,7 +50,7 @@ def detect_labels(photo, bucket):
         print ("Parents:")
         for parent in label['Parents']:
             print ("   " + parent['Name'])
-        print ("###################" + 'END labels for ' + photo("###################")
+        print ("###################"  + " Ending Labels for "  + photo + "###################")
         print ()
     return len(response['Labels'])
 
