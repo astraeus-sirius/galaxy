@@ -1,14 +1,13 @@
 from tkinter import Image
 import boto3
+import pandas as pd
 
 region="us-east-1"
-bucket="dummy-rekognition"
-profile_name = "jaweed"
+bucket="iris-rekognition"
 min_confidence = 80
 max_labels = 10
 
 def list_objects(bucket,region):
-    boto3.setup_default_session(profile_name = profile_name)
     client=boto3.client('s3', region_name=region)
     response = client.list_objects_v2(
         Bucket=bucket
@@ -20,7 +19,6 @@ def list_objects(bucket,region):
 
 
 def detect_labels(photo, bucket):
-    boto3.setup_default_session(profile_name=profile_name)
     client=boto3.client('rekognition', region_name = region)
     response=client.detect_labels(
         Image = {
@@ -36,6 +34,9 @@ def detect_labels(photo, bucket):
     print ("###################"  + " Starting Labels for "  + photo + "###################")
     print()
     for label in response['Labels']:
+        df = pd.DataFrame(data=response['Labels'])
+        df.columns =['Labels', 'Confidence', 'Instances','Parent']
+        df.to_csv('results.csv', index=True, header=True)
         print ("Label: " + label['Name'])
         print ("Confidence: " + str(label['Confidence']))
         print ("Instances:")
