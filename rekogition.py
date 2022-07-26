@@ -32,7 +32,9 @@ def detect_labels(photo, bucket):
         )
     print()
     df = pd.DataFrame(response['Labels'])
-    df.to_csv('results.csv', mode='a', index=True, header=True)
+    df['Photo'] = pd.Series([photo]) 
+    dffill = df.ffill() 
+    dffill.to_csv('results.csv', mode='a', index=True, header=True)
     for label in response['Labels']:
         print ("Label: " + label['Name'])
         print ("Confidence: " + str(label['Confidence']) + "%")
@@ -49,7 +51,7 @@ def detect_labels(photo, bucket):
         for parent in label['Parents']:
             print ("     " + parent['Name'])
     print ()
-    return response['Labels']
+    return df
 
 def main():
     photos = list_objects(bucket, region)
