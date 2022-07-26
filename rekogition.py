@@ -8,7 +8,6 @@ min_confidence = 80
 max_labels = 10
 
 def list_objects(bucket,region):
-    boto3.setup_default_session(profile_name = profile_name)
     client=boto3.client('s3', region_name=region)
     response = client.list_objects_v2(
         Bucket=bucket
@@ -19,7 +18,6 @@ def list_objects(bucket,region):
     return(object_list)
 
 def detect_labels(photo, bucket):
-    boto3.setup_default_session(profile_name=profile_name)
     client=boto3.client('rekognition', region_name = region)
     response=client.detect_labels(
         Image = {
