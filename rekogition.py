@@ -34,6 +34,9 @@ def detect_labels(photo, bucket):
     df = pd.DataFrame(response['Labels'])
     df['Photo'] = pd.Series([photo]) 
     dffill = df.ffill() 
+    new_cols = ["Photo","Name","Confidence","Parents","Instances"]
+    dffill.reindex(columns=new_cols)
+    dffill=dffill[new_cols]
     dffill.to_csv('results.csv', mode='a', index=True, header=True)
     for label in response['Labels']:
         print ("Label: " + label['Name'])
